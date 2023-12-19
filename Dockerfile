@@ -40,7 +40,7 @@ RUN mkdir -p $AIRFLOW_HOME && chown -R airflow: $AIRFLOW_HOME
 COPY dags /opt/airflow/dags
 COPY airflow.cfg /opt/airflow/airflow.cfg
 
-RUN apt-get remove --auto-remove linux-libc-dev python3.10 -y 
+RUN apt-get remove --auto-remove linux-libc-dev -y 
 
 
 # Switch to the non-root user

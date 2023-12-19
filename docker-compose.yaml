@@ -44,24 +44,21 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  # image: ${AIRFLOW_IMAGE_NAME:-acryldata/airflow-datahub:latest}
-  build: .
+  image: ${AIRFLOW_IMAGE_NAME:-jeanlee/airflow-custom:2.8.0b1}
+  # build: .
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW_HOME: /opt/airflow
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
     AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/plugins
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-    # AIRFLOW__LINEAGE__BACKEND: 'datahub_provider.lineage.datahub.DatahubLineageBackend'
-    # AIRFLOW__LINEAGE__DATAHUB_KWARGS: '{ "datahub_conn_id": "datahub_rest_default", "capture_ownership_info": true, "capture_tags_info": true, "graceful_exceptions": false }'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64/
   volumes:
@@ -75,7 +72,7 @@ x-airflow-common:
     postgres:
       condition: service_healthy
   networks:
-    - datahub_network
+    - airflow_network
   
 
 services:
@@ -92,7 +89,7 @@ services:
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
     networks:
-      - datahub_network
+      - airflow_network
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -105,7 +102,7 @@ services:
     ports:
       - 6379:6379
     networks:
-      - datahub_network
+      - airflow_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -161,6 +158,7 @@ services:
   flower:
     <<: *airflow-common
     command: celery flower
+    
     ports:
       - 5555:5555
     healthcheck:
@@ -169,11 +167,12 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    
 
 volumes:
   postgres-db-volume:
 
 networks:
-  datahub_network:
+  airflow_network:
     external: true
 

@@ -40,6 +40,10 @@ Two ways to build you own Airflow image:
     ...
     ```
 ### Start the Airflow Services
+* Build docker network for the network between Airflow services
+    ```shell
+    docker network create airflow_network
+    ```
 * Utilize the Dockerfile in the repository to build and initiate the service.
     #### check the yaml configuration
     ```yaml
