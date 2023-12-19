@@ -1,4 +1,4 @@
-# Use the official Python 3.8 image
+# Use the official ubuntu
 FROM ubuntu:latest
 
 # Set environment variables
@@ -28,8 +28,8 @@ RUN apt update && apt install -y python3.8 python3.8-distutils python3.8-dev
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.8
 
 # Install Apache Airflow with the specified version
-COPY requirements.txt /usr/local/airflow/
-RUN pip install -r /usr/local/airflow/requirements.txt
+COPY requirements.txt /opt/airflow/
+RUN pip install -r /opt/airflow/requirements.txt
 
 # Set up a non-root user
 RUN useradd -ms /bin/bash airflow --uid 50000
