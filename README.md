@@ -8,7 +8,7 @@ This repository offers a Dockerfile accompanied by a Docker Compose YAML file. T
 
 ## Version of Airflow and Python we're using
 * python==3.8
-* airflow==2.8.0b1
+* airflow==2.8.0
 
 The version we have opted to build is determined based on the existing vulnerabilities(no high and critical level).
 
@@ -18,9 +18,9 @@ The version we have opted to build is determined based on the existing vulnerabi
 Here's a sample list of packages for running Airflow:
 you can add your own packages to this requirements.
 ```t
-apache-airflow-providers-celery>=3.4.1 ; python_version >= "3.8" and python_version < "3.10"
+apache-airflow-providers-celery>=3.4.1 ; python_version >= "3.8" 
 redis==4.6.0
-apache-airflow==2.8.0b1 ; python_version >= "3.8" and python_version < "3.10"
+apache-airflow==2.8.0 ; python_version >= "3.8"
 
 ```
 ### Build docker image
@@ -32,11 +32,15 @@ Two ways to build you own Airflow image:
     ```
     2. build
     ```shell
-    docker build -t airflow-custom:2.8.0b1 .
+    docker build -t airflow-custom:2.8.0 .
+    ```
+    or build with specified dockerfile
+     ```shell
+    docker build -t airflow-custom:2.8.0_py3.10 -f Dockerfile.py310
     ```
 * Create you own Dockerfile using the image on DockerHub as the base image
     ```Dockerfile
-    FROM jeanlee/airflow-custom:2.8.0b1
+    FROM jeanlee/airflow-custom:2.8.0
     ...
     ```
 ### Start the Airflow Services
@@ -51,7 +55,7 @@ Two ways to build you own Airflow image:
     x-airflow-common:
     &airflow-common
     # leave the following line commented out
-    #image: ${AIRFLOW_IMAGE_NAME:-jeanlee/airflow-custom:2.8.0b1}
+    #image: ${AIRFLOW_IMAGE_NAME:-jeanlee/airflow-custom:2.8.0}
     build: .
     ```
     #### execute docker compose command
