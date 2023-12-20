@@ -7,12 +7,12 @@ This is where building your Airflow image from scratch comes into play."
 This repository offers a Dockerfile accompanied by a Docker Compose YAML file. These resources are provided for those who wish to host Airflow on their local computer or a standalone machine.
 
 ## Version of Airflow and Python we're using
-* python==3.8
+* python>=3.8
 * airflow==2.8.0
 
 The version we have opted to build is determined based on the existing vulnerabilities(no high and critical level).
 
-**note**: feel free to change the version of Python in Dockerfile, if you need higher version.
+**note**: If you'd like to have python3.10 or later version check Dockerfile.py310.
 
 ## Other packages
 Here's a sample list of packages for running Airflow:
