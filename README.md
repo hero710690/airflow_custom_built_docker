@@ -80,3 +80,5 @@ Two ways to build you own Airflow image:
     docker-compose up -d
     # Run the container in the background
     ```
+
+    Check more information on Medium blog at https://medium.com/@hero710690/securing-your-airflow-on-production-building-docker-images-with-less-vulnerabilities-7f42e096b885.
