@@ -44,7 +44,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  image: ${AIRFLOW_IMAGE_NAME:-jeanlee/airflow-custom:2.8.0b1}
+  image: ${AIRFLOW_IMAGE_NAME:-jeanlee/airflow-custom:2.8.0}
   # build: .
   environment:
     &airflow-common-env
@@ -115,7 +115,7 @@ services:
     command: airflow webserver
 
     ports:
-      - 58080:8080
+      - 8080:8080
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:58080/health"]
       interval: 10s
